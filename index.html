@@ -239,19 +239,14 @@
       <svg class="cowl-layer" viewBox="0 0 1333 2000" preserveAspectRatio="xMidYMin slice" aria-hidden="true">
         <defs>
           <linearGradient id="cowlFill" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0" stop-color="#1b2232"/>
-            <stop offset=".45" stop-color="#0d121c"/>
-            <stop offset="1" stop-color="#05070b"/>
+            <stop offset="0" stop-color="#11151e"/>
+            <stop offset=".5" stop-color="#07090d"/>
+            <stop offset="1" stop-color="#030405"/>
           </linearGradient>
           <radialGradient id="sheen" cx=".35" cy=".25" r=".55">
             <stop offset="0" stop-color="#8fa6d6" stop-opacity=".35"/>
             <stop offset="1" stop-color="#8fa6d6" stop-opacity="0"/>
           </radialGradient>
-          <linearGradient id="ridge" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0" stop-color="#9fb4e0" stop-opacity="0"/>
-            <stop offset=".4" stop-color="#9fb4e0" stop-opacity=".45"/>
-            <stop offset="1" stop-color="#9fb4e0" stop-opacity=".05"/>
-          </linearGradient>
           <filter id="cowlShadow" x="-30%" y="-30%" width="160%" height="170%">
             <feDropShadow dx="0" dy="22" stdDeviation="18" flood-color="#000" flood-opacity=".75"/>
           </filter>
@@ -264,30 +259,25 @@
         </defs>
 
         <g id="cowl" filter="url(#cowlShadow)">
+          <!-- flat silhouette: straight ears, angled eye slits, nose point, cheek fangs -->
           <path id="cowlShape" fill="url(#cowlFill)" fill-rule="evenodd" d="
-            M653,762 C610,758 575,752 548,760 C515,772 480,810 455,870 L425,960
-            C395,900 360,800 340,700 C322,600 322,480 340,380 L352,300 L368,70 L430,250
-            C500,170 580,150 653,148 C726,150 806,170 876,250 L938,70 L954,300 L966,380
-            C984,480 984,600 966,700 C946,800 911,900 881,960 L851,870
-            C826,810 791,772 758,760 C731,752 696,758 653,762 Z
-            M462,572 C490,540 540,532 572,540 L622,566 C600,600 560,606 525,600 C495,595 475,586 462,572 Z
-            M844,572 C816,540 766,532 734,540 L684,566 C706,600 746,606 781,600 C811,595 831,586 844,572 Z"/>
+            M653,782 L617,766 C560,747 500,756 470,783 C464,859 482,932 506,992
+            C430,917 366,801 352,637 C340,488 352,360 378,296 L384,27 L530,213
+            C575,181 620,168 653,168 C686,168 731,181 776,213 L922,27 L928,296
+            C954,360 966,488 954,637 C940,801 876,917 800,992
+            C824,932 842,859 836,783 C806,756 746,747 689,766 Z
+            M468,548 C510,538 570,556 622,588 C596,606 556,612 520,604 C492,598 474,578 468,548 Z
+            M838,548 C796,538 736,556 684,588 C710,606 750,612 786,604 C814,598 832,578 838,548 Z"/>
           <g clip-path="url(#cowlClip)">
-            <!-- glossy highlight + sculpted shading -->
-            <rect x="300" y="40" width="720" height="940" fill="url(#sheen)"/>
-            <path d="M440,470 C520,430 600,440 653,480 C706,440 786,430 866,470 L870,520 C790,490 710,500 653,545 C596,500 516,490 436,520 Z" fill="#000" opacity=".55" filter="url(#soft)"/>
-            <path d="M653,300 C640,420 628,560 612,690 M653,300 C666,420 678,560 694,690" stroke="url(#ridge)" stroke-width="6" fill="none" filter="url(#soft)"/>
-            <path d="M653,330 L653,640" stroke="url(#ridge)" stroke-width="3" fill="none"/>
-            <path d="M380,640 C420,700 470,740 520,760" stroke="#9fb4e0" stroke-opacity=".18" stroke-width="10" fill="none" filter="url(#soft)"/>
-            <path d="M926,640 C886,700 836,740 786,760" stroke="#9fb4e0" stroke-opacity=".12" stroke-width="10" fill="none" filter="url(#soft)"/>
-            <path d="M462,572 C490,540 540,532 572,540 L622,566 C600,600 560,606 525,600 C495,595 475,586 462,572 Z
-                     M844,572 C816,540 766,532 734,540 L684,566 C706,600 746,606 781,600 C811,595 831,586 844,572 Z"
+            <rect x="340" y="0" width="630" height="1000" fill="url(#sheen)" opacity=".5"/>
+            <path d="M468,548 C510,538 570,556 622,588 C596,606 556,612 520,604 C492,598 474,578 468,548 Z
+                     M838,548 C796,538 736,556 684,588 C710,606 750,612 786,604 C814,598 832,578 838,548 Z"
                   fill="none" stroke="#000" stroke-width="22" opacity=".8" filter="url(#soft)"/>
           </g>
-          <use href="#cowlShape" fill="none" stroke="#a9c0ee" stroke-opacity=".28" stroke-width="2.5"/>
+          <use href="#cowlShape" fill="none" stroke="#a9c0ee" stroke-opacity=".22" stroke-width="2.5"/>
           <g id="lenses" filter="url(#lensGlow)">
-            <path fill="#f4f8ff" d="M462,572 C490,540 540,532 572,540 L622,566 C600,600 560,606 525,600 C495,595 475,586 462,572 Z"/>
-            <path fill="#f4f8ff" d="M844,572 C816,540 766,532 734,540 L684,566 C706,600 746,606 781,600 C811,595 831,586 844,572 Z"/>
+            <path fill="#f4f8ff" d="M468,548 C510,538 570,556 622,588 C596,606 556,612 520,604 C492,598 474,578 468,548 Z"/>
+            <path fill="#f4f8ff" d="M838,548 C796,538 736,556 684,588 C710,606 750,612 786,604 C814,598 832,578 838,548 Z"/>
           </g>
         </g>
       </svg>
@@ -380,7 +370,7 @@
   const N = innerWidth < 700 ? 110 : 170;
   let guard = 0;
   while (bats.length < N && guard++ < 20000) {
-    const x = 330 + rand() * 660, y = 60 + rand() * 900;
+    const x = 360 + rand() * 590, y = 20 + rand() * 980;
     let inside = true;
     try { inside = cowlShape.isPointInFill(new DOMPoint(x, y)); } catch (e) {}
     if (!inside) continue;
