@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Frano Mihaljević</title>
-<meta name="description" content="Personal website of Frano Mihaljević.">
+<title>Frano Mihaljevic</title>
+<meta name="description" content="Personal website of Frano Mihaljevic.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@300;400;600;800&display=swap" rel="stylesheet">
@@ -187,15 +187,19 @@
 
   .contact { text-align: center; }
   .contact h2 { margin: 0 auto; max-width: none; }
+  .contact .lede { margin: 1.4rem auto 0; }
+  .contact .actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; margin-top: 2.6rem; }
   .contact a.btn {
     display: inline-flex; align-items: center; gap: .8rem;
-    margin-top: 2.6rem; padding: 1.1rem 2.2rem;
+    padding: 1.1rem 2.2rem;
     border: 1px solid var(--signal); color: var(--signal);
     text-decoration: none; letter-spacing: .3em; text-transform: uppercase; font-size: .8rem; font-weight: 600;
     transition: background .3s, color .3s, box-shadow .3s;
   }
   .contact a.btn:hover { background: var(--signal); color: var(--bg); box-shadow: 0 0 60px var(--signal-glow); }
   .contact a.btn svg { width: 22px; height: 11px; fill: currentColor; }
+  .contact a.btn.ghost { border-color: var(--line); color: var(--ink); }
+  .contact a.btn.ghost:hover { border-color: var(--ink); background: transparent; color: var(--ink); box-shadow: none; }
   footer { text-align: center; padding: 3rem 16px 4rem; color: #4d5568; font-size: .8rem; letter-spacing: .2em; }
 
   .fade-up { opacity: 0; transform: translateY(40px); transition: opacity 1s cubic-bezier(.2,.7,.2,1), transform 1s cubic-bezier(.2,.7,.2,1); }
@@ -230,7 +234,7 @@
 
     <div class="portrait" id="portrait">
       <div class="photo">
-        <img class="noir" src="photo.jpg" alt="Portrait of Frano Mihaljević">
+        <img class="noir" src="photo.jpg" alt="Portrait of Frano Mihaljevic">
         <img class="color" id="colorImg" src="photo.jpg" alt="">
         <div class="tint" id="tint"></div>
       </div>
@@ -288,7 +292,7 @@
 
     <div class="reveal" id="reveal">
       <div class="kicker" id="kicker">Unmasked</div>
-      <h1 id="name" aria-label="Frano Mihaljević"></h1>
+      <h1 id="name" aria-label="Frano Mihaljevic"></h1>
     </div>
 
     <div class="scroll-hint" id="hint">Scroll to unmask<i></i></div>
@@ -298,10 +302,12 @@
 <main>
   <section class="block">
     <div class="eyebrow fade-up"><svg><use href="#bat"/></svg>About</div>
-    <h2 class="fade-up">Every city needs someone who builds things at night.</h2>
+    <h2 class="fade-up">Pharmacist by training. Agent builder by night.</h2>
     <p class="lede fade-up">
-      Hi, I'm Frano. Replace this paragraph with a few sentences about who you are,
-      what you care about, and what you're working on right now.
+      I'm Frano, a pharmacist (MPharm) with nearly five years in pharmacometrics software.
+      As a Senior Scientific Product Specialist at Simulations Plus in Paris, I build LLM agents
+      for drug development and test them until scientists can trust what they produce.
+      Before that I modeled drug release at Teva, and built Django sites as a freelancer on the side.
     </p>
   </section>
 
@@ -309,19 +315,23 @@
     <div class="eyebrow fade-up"><svg><use href="#bat"/></svg>What I do</div>
     <h2 class="fade-up">The utility belt.</h2>
     <div class="cards fade-up">
-      <article class="card"><div class="num">01</div><h3>Your first skill</h3><p>Describe something you're good at and the kind of problems it solves.</p></article>
-      <article class="card"><div class="num">02</div><h3>Your second skill</h3><p>A project, a tool, a craft. Keep it short; let people ask for more.</p></article>
-      <article class="card"><div class="num">03</div><h3>Your third skill</h3><p>Something unexpected. Every good hero has one gadget nobody saw coming.</p></article>
+      <article class="card"><div class="num">01</div><h3>AI agents development</h3><p>Designing, building and shipping LLM agents and the tools they rely on, then evaluating them carefully so the people using them can trust the results.</p></article>
+      <article class="card"><div class="num">02</div><h3>Pharmacometrics</h3><p>Modeling how drugs behave in the body to support drug development, from client projects and training to research.</p></article>
+      <article class="card"><div class="num">03</div><h3>Programming</h3><p>Writing the software that holds it all together: data pipelines, integrations and web platforms, built to be reliable and easy to maintain.</p></article>
     </div>
   </section>
 
   <section class="block contact">
     <div class="eyebrow fade-up" style="justify-content:center"><svg><use href="#bat"/></svg>Contact</div>
     <h2 class="fade-up">Light up the signal.</h2>
-    <a class="btn fade-up" href="mailto:you@example.com"><svg><use href="#bat"/></svg>Get in touch</a>
+    <p class="lede fade-up">Open to conversations about AI in life sciences, pharmacometrics, or agent evaluation.</p>
+    <div class="actions fade-up">
+      <a class="btn" href="mailto:frano.mihaljevic@proton.me"><svg><use href="#bat"/></svg>Get in touch</a>
+      <a class="btn ghost" href="https://www.linkedin.com/in/frano-mihaljevic" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
   </section>
 
-  <footer>© <span id="year"></span> Frano Mihaljević</footer>
+  <footer>© <span id="year"></span> Frano Mihaljevic</footer>
 </main>
 
 <script>
@@ -336,7 +346,7 @@
   $('year').textContent = new Date().getFullYear();
 
   // split name into letters for the reveal
-  const NAME = 'Frano Mihaljević';
+  const NAME = 'Frano Mihaljevic';
   const letters = [...NAME].map((ch) => {
     const s = document.createElement('span');
     if (ch === ' ') s.className = 'sp'; else s.textContent = ch;
