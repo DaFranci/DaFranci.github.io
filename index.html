@@ -1,0 +1,535 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Frano Mihaljević</title>
+<meta name="description" content="Personal website of Frano Mihaljević.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@300;400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #04060b;
+    --bg-2: #0a0f1a;
+    --ink: #e8ecf4;
+    --muted: #8a94a8;
+    --signal: #f3d36b;
+    --signal-glow: rgba(243, 211, 107, .18);
+    --steel: #6f86b3;
+    --line: rgba(140, 165, 210, .14);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { background: var(--bg); }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Manrope", system-ui, sans-serif;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero { height: 420vh; position: relative; }
+  .stage {
+    position: sticky; top: 0;
+    height: 100vh; height: 100svh;
+    overflow: hidden;
+    display: grid; place-items: center;
+    background:
+      radial-gradient(ellipse 60% 50% at 50% 38%, #142038 0%, transparent 70%),
+      linear-gradient(180deg, #060a14 0%, var(--bg) 70%);
+  }
+  /* bat signal in the sky */
+  .signal {
+    position: absolute; left: 50%; top: 4%;
+    width: min(70vw, 760px); aspect-ratio: 2 / 1;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background: radial-gradient(ellipse at center, var(--signal-glow) 0%, rgba(243,211,107,.06) 45%, transparent 70%);
+    filter: blur(2px);
+    opacity: .9;
+    pointer-events: none;
+  }
+  .signal svg { position: absolute; inset: 22% 26%; width: 48%; height: 56%; opacity: .16; fill: #000; }
+  .beam {
+    position: absolute; left: 50%; bottom: -10%;
+    width: 46vw; height: 120vh;
+    transform-origin: 50% 100%;
+    transform: translateX(-50%) rotate(-8deg);
+    background: linear-gradient(0deg, rgba(243,211,107,.10), rgba(243,211,107,0) 85%);
+    clip-path: polygon(46% 100%, 54% 100%, 100% 0, 0 0);
+    filter: blur(8px);
+    pointer-events: none;
+    animation: sweep 14s ease-in-out infinite alternate;
+  }
+  @keyframes sweep { from { transform: translateX(-50%) rotate(-10deg); } to { transform: translateX(-50%) rotate(7deg); } }
+
+  canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+  #rain { opacity: .55; }
+  .flash { position: absolute; inset: 0; background: #cfe0ff; opacity: 0; pointer-events: none; mix-blend-mode: overlay; }
+
+  .ghost-title {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: "Bebas Neue", sans-serif;
+    font-size: clamp(5rem, 22vw, 22rem);
+    line-height: .82;
+    letter-spacing: .02em;
+    text-align: center;
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgba(160, 185, 230, .22);
+    white-space: nowrap;
+    user-select: none;
+    pointer-events: none;
+  }
+
+  .portrait {
+    position: relative;
+    height: min(86vh, 86svh);
+    aspect-ratio: 1333 / 1500;
+    max-width: 94vw;
+    z-index: 2;
+  }
+  .portrait .photo {
+    position: absolute; inset: 0;
+    -webkit-mask-image: radial-gradient(closest-side at 50% 45%, #000 55%, transparent 100%);
+            mask-image: radial-gradient(closest-side at 50% 45%, #000 55%, transparent 100%);
+  }
+  .portrait img {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; object-position: 50% 0%;
+    display: block;
+  }
+  .portrait .noir { filter: grayscale(1) contrast(1.35) brightness(.5); }
+  .portrait .color { opacity: 0; }
+  .portrait .tint {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 70% 60% at 50% 35%, transparent 30%, rgba(4,6,11,.75) 100%),
+                linear-gradient(180deg, rgba(20,40,80,.35), rgba(4,6,11,.2) 50%, var(--bg) 98%);
+    mix-blend-mode: multiply;
+  }
+  .portrait svg.cowl-layer {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    overflow: visible;
+  }
+
+  .scroll-hint {
+    position: absolute; bottom: 4vh; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: .6rem;
+    font-size: .72rem; letter-spacing: .4em; text-transform: uppercase; color: var(--muted);
+    z-index: 3;
+  }
+  .scroll-hint i {
+    width: 1px; height: 48px;
+    background: linear-gradient(var(--signal), transparent);
+    animation: drip 1.8s ease-in-out infinite;
+    transform-origin: top;
+  }
+  @keyframes drip { 0% { transform: scaleY(0); opacity: 1; } 70% { transform: scaleY(1); opacity: 1; } 100% { transform: scaleY(1); opacity: 0; } }
+
+  .reveal {
+    position: absolute; left: 0; right: 0; bottom: 6vh;
+    text-align: center; z-index: 3;
+    pointer-events: none;
+  }
+  .reveal .kicker {
+    font-size: .78rem; letter-spacing: .5em; text-transform: uppercase; color: var(--signal);
+    opacity: 0;
+  }
+  .reveal h1 {
+    font-family: "Bebas Neue", sans-serif;
+    font-weight: 400;
+    font-size: clamp(3.2rem, 11vw, 9rem);
+    line-height: .9;
+    letter-spacing: .04em;
+    margin-top: .4rem;
+    text-shadow: 0 10px 40px rgba(0,0,0,.8);
+  }
+  .reveal h1 span { display: inline-block; opacity: 0; transform: translateY(40px) rotateX(70deg); }
+  .reveal h1 .sp { width: .3em; }
+
+  /* ---------- CONTENT ---------- */
+  main { position: relative; z-index: 4; background: var(--bg); }
+  section.block {
+    max-width: 1100px; margin: 0 auto;
+    padding: clamp(5rem, 12vw, 9rem) 16px;
+    border-top: 1px solid var(--line);
+  }
+  .eyebrow {
+    display: flex; align-items: center; gap: .8rem;
+    font-size: .74rem; letter-spacing: .45em; text-transform: uppercase; color: var(--signal);
+    margin-bottom: 1.6rem;
+  }
+  .eyebrow svg { width: 28px; height: 14px; fill: currentColor; }
+  h2 {
+    font-family: "Bebas Neue", sans-serif; font-weight: 400;
+    font-size: clamp(2.6rem, 7vw, 5.2rem); line-height: .95; letter-spacing: .02em;
+    max-width: 14ch;
+  }
+  .lede { margin-top: 1.8rem; max-width: 60ch; font-size: clamp(1rem, 1.6vw, 1.2rem); line-height: 1.75; color: #b7c0d2; font-weight: 300; }
+
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1px; margin-top: 3rem; background: var(--line); border: 1px solid var(--line); }
+  .card {
+    background: var(--bg); padding: 2.2rem 1.8rem 2.6rem;
+    position: relative; overflow: hidden;
+    transition: background .4s;
+  }
+  .card::before {
+    content: ""; position: absolute; inset: 0;
+    background: radial-gradient(400px circle at var(--mx, 50%) var(--my, 50%), rgba(243,211,107,.10), transparent 60%);
+    opacity: 0; transition: opacity .3s;
+  }
+  .card:hover::before { opacity: 1; }
+  .card .num { font-family: "Bebas Neue"; font-size: 1.1rem; color: var(--steel); letter-spacing: .2em; }
+  .card h3 { font-size: 1.25rem; font-weight: 800; margin: 1.2rem 0 .7rem; }
+  .card p { color: var(--muted); line-height: 1.65; font-size: .96rem; }
+
+  .contact { text-align: center; }
+  .contact h2 { margin: 0 auto; max-width: none; }
+  .contact a.btn {
+    display: inline-flex; align-items: center; gap: .8rem;
+    margin-top: 2.6rem; padding: 1.1rem 2.2rem;
+    border: 1px solid var(--signal); color: var(--signal);
+    text-decoration: none; letter-spacing: .3em; text-transform: uppercase; font-size: .8rem; font-weight: 600;
+    transition: background .3s, color .3s, box-shadow .3s;
+  }
+  .contact a.btn:hover { background: var(--signal); color: var(--bg); box-shadow: 0 0 60px var(--signal-glow); }
+  .contact a.btn svg { width: 22px; height: 11px; fill: currentColor; }
+  footer { text-align: center; padding: 3rem 16px 4rem; color: #4d5568; font-size: .8rem; letter-spacing: .2em; }
+
+  .fade-up { opacity: 0; transform: translateY(40px); transition: opacity 1s cubic-bezier(.2,.7,.2,1), transform 1s cubic-bezier(.2,.7,.2,1); }
+  .fade-up.in { opacity: 1; transform: none; }
+
+  @media (max-aspect-ratio: 3/4) {
+    .portrait { height: auto; width: 94vw; }
+    .reveal { bottom: 10vh; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .beam, .scroll-hint i { animation: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- reusable bat emblem -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="bat" viewBox="-52 -20 104 38">
+      <path d="M0,-6 L-4,-18 L-7,-7 C-20,-14 -40,-14 -50,-4 C-42,-2 -38,4 -38,10 C-30,4 -22,6 -18,14 C-14,8 -6,8 0,17 C6,8 14,8 18,14 C22,6 30,4 38,10 C38,4 42,-2 50,-4 C40,-14 20,-14 7,-7 L4,-18 Z"/>
+    </symbol>
+  </defs>
+</svg>
+
+<header class="hero" id="hero">
+  <div class="stage">
+    <div class="beam"></div>
+    <div class="signal"><svg><use href="#bat"/></svg></div>
+    <canvas id="rain"></canvas>
+    <div class="ghost-title" id="ghost">BEHIND<br>THE MASK</div>
+
+    <div class="portrait" id="portrait">
+      <div class="photo">
+        <img class="noir" src="photo.jpg" alt="Portrait of Frano Mihaljević">
+        <img class="color" id="colorImg" src="photo.jpg" alt="">
+        <div class="tint" id="tint"></div>
+      </div>
+
+      <!-- viewBox matches the photo's pixel grid (1333×2000), anchored to the top like the img -->
+      <svg class="cowl-layer" viewBox="0 0 1333 2000" preserveAspectRatio="xMidYMin slice" aria-hidden="true">
+        <defs>
+          <linearGradient id="cowlFill" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#1b2232"/>
+            <stop offset=".45" stop-color="#0d121c"/>
+            <stop offset="1" stop-color="#05070b"/>
+          </linearGradient>
+          <radialGradient id="sheen" cx=".35" cy=".25" r=".55">
+            <stop offset="0" stop-color="#8fa6d6" stop-opacity=".35"/>
+            <stop offset="1" stop-color="#8fa6d6" stop-opacity="0"/>
+          </radialGradient>
+          <linearGradient id="ridge" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#9fb4e0" stop-opacity="0"/>
+            <stop offset=".4" stop-color="#9fb4e0" stop-opacity=".45"/>
+            <stop offset="1" stop-color="#9fb4e0" stop-opacity=".05"/>
+          </linearGradient>
+          <filter id="cowlShadow" x="-30%" y="-30%" width="160%" height="170%">
+            <feDropShadow dx="0" dy="22" stdDeviation="18" flood-color="#000" flood-opacity=".75"/>
+          </filter>
+          <filter id="lensGlow" x="-50%" y="-100%" width="200%" height="300%">
+            <feGaussianBlur stdDeviation="6" result="b"/>
+            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <filter id="soft"><feGaussianBlur stdDeviation="10"/></filter>
+          <clipPath id="cowlClip"><use href="#cowlShape"/></clipPath>
+        </defs>
+
+        <g id="cowl" filter="url(#cowlShadow)">
+          <path id="cowlShape" fill="url(#cowlFill)" fill-rule="evenodd" d="
+            M653,762 C610,758 575,752 548,760 C515,772 480,810 455,870 L425,960
+            C395,900 360,800 340,700 C322,600 322,480 340,380 L352,300 L368,70 L430,250
+            C500,170 580,150 653,148 C726,150 806,170 876,250 L938,70 L954,300 L966,380
+            C984,480 984,600 966,700 C946,800 911,900 881,960 L851,870
+            C826,810 791,772 758,760 C731,752 696,758 653,762 Z
+            M462,572 C490,540 540,532 572,540 L622,566 C600,600 560,606 525,600 C495,595 475,586 462,572 Z
+            M844,572 C816,540 766,532 734,540 L684,566 C706,600 746,606 781,600 C811,595 831,586 844,572 Z"/>
+          <g clip-path="url(#cowlClip)">
+            <!-- glossy highlight + sculpted shading -->
+            <rect x="300" y="40" width="720" height="940" fill="url(#sheen)"/>
+            <path d="M440,470 C520,430 600,440 653,480 C706,440 786,430 866,470 L870,520 C790,490 710,500 653,545 C596,500 516,490 436,520 Z" fill="#000" opacity=".55" filter="url(#soft)"/>
+            <path d="M653,300 C640,420 628,560 612,690 M653,300 C666,420 678,560 694,690" stroke="url(#ridge)" stroke-width="6" fill="none" filter="url(#soft)"/>
+            <path d="M653,330 L653,640" stroke="url(#ridge)" stroke-width="3" fill="none"/>
+            <path d="M380,640 C420,700 470,740 520,760" stroke="#9fb4e0" stroke-opacity=".18" stroke-width="10" fill="none" filter="url(#soft)"/>
+            <path d="M926,640 C886,700 836,740 786,760" stroke="#9fb4e0" stroke-opacity=".12" stroke-width="10" fill="none" filter="url(#soft)"/>
+            <path d="M462,572 C490,540 540,532 572,540 L622,566 C600,600 560,606 525,600 C495,595 475,586 462,572 Z
+                     M844,572 C816,540 766,532 734,540 L684,566 C706,600 746,606 781,600 C811,595 831,586 844,572 Z"
+                  fill="none" stroke="#000" stroke-width="22" opacity=".8" filter="url(#soft)"/>
+          </g>
+          <use href="#cowlShape" fill="none" stroke="#a9c0ee" stroke-opacity=".28" stroke-width="2.5"/>
+          <g id="lenses" filter="url(#lensGlow)">
+            <path fill="#f4f8ff" d="M462,572 C490,540 540,532 572,540 L622,566 C600,600 560,606 525,600 C495,595 475,586 462,572 Z"/>
+            <path fill="#f4f8ff" d="M844,572 C816,540 766,532 734,540 L684,566 C706,600 746,606 781,600 C811,595 831,586 844,572 Z"/>
+          </g>
+        </g>
+      </svg>
+    </div>
+
+    <canvas id="bats"></canvas>
+    <div class="flash" id="flash"></div>
+
+    <div class="reveal" id="reveal">
+      <div class="kicker" id="kicker">Unmasked</div>
+      <h1 id="name" aria-label="Frano Mihaljević"></h1>
+    </div>
+
+    <div class="scroll-hint" id="hint">Scroll to unmask<i></i></div>
+  </div>
+</header>
+
+<main>
+  <section class="block">
+    <div class="eyebrow fade-up"><svg><use href="#bat"/></svg>About</div>
+    <h2 class="fade-up">Every city needs someone who builds things at night.</h2>
+    <p class="lede fade-up">
+      Hi, I'm Frano. Replace this paragraph with a few sentences about who you are,
+      what you care about, and what you're working on right now.
+    </p>
+  </section>
+
+  <section class="block">
+    <div class="eyebrow fade-up"><svg><use href="#bat"/></svg>What I do</div>
+    <h2 class="fade-up">The utility belt.</h2>
+    <div class="cards fade-up">
+      <article class="card"><div class="num">01</div><h3>Your first skill</h3><p>Describe something you're good at and the kind of problems it solves.</p></article>
+      <article class="card"><div class="num">02</div><h3>Your second skill</h3><p>A project, a tool, a craft. Keep it short; let people ask for more.</p></article>
+      <article class="card"><div class="num">03</div><h3>Your third skill</h3><p>Something unexpected. Every good hero has one gadget nobody saw coming.</p></article>
+    </div>
+  </section>
+
+  <section class="block contact">
+    <div class="eyebrow fade-up" style="justify-content:center"><svg><use href="#bat"/></svg>Contact</div>
+    <h2 class="fade-up">Light up the signal.</h2>
+    <a class="btn fade-up" href="mailto:you@example.com"><svg><use href="#bat"/></svg>Get in touch</a>
+  </section>
+
+  <footer>© <span id="year"></span> Frano Mihaljević</footer>
+</main>
+
+<script>
+(() => {
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const $ = (id) => document.getElementById(id);
+  const hero = $('hero'), cowl = $('cowl'), cowlShape = $('cowlShape'), lenses = $('lenses');
+  const colorImg = $('colorImg'), tint = $('tint'), ghost = $('ghost'), hint = $('hint');
+  const kicker = $('kicker'), nameEl = $('name'), flash = $('flash');
+  const batCanvas = $('bats'), bctx = batCanvas.getContext('2d');
+  const rainCanvas = $('rain'), rctx = rainCanvas.getContext('2d');
+  $('year').textContent = new Date().getFullYear();
+
+  // split name into letters for the reveal
+  const NAME = 'Frano Mihaljević';
+  const letters = [...NAME].map((ch) => {
+    const s = document.createElement('span');
+    if (ch === ' ') s.className = 'sp'; else s.textContent = ch;
+    s.setAttribute('aria-hidden', 'true');
+    nameEl.appendChild(s);
+    return s;
+  });
+
+  const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+  const range = (p, a, b) => clamp((p - a) / (b - a));
+  const easeInOut = (t) => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  const easeOut = (t) => 1 - Math.pow(1 - t, 3);
+
+  // ---------- canvases ----------
+  let W = 0, H = 0, dpr = 1;
+  function resize() {
+    dpr = Math.min(devicePixelRatio || 1, 2);
+    const r = batCanvas.getBoundingClientRect();
+    W = r.width; H = r.height;
+    for (const c of [batCanvas, rainCanvas]) { c.width = W * dpr; c.height = H * dpr; }
+    bctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    rctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  addEventListener('resize', resize);
+  resize();
+
+  // ---------- bats: sampled from inside the cowl shape ----------
+  const BAT = new Path2D('M0,-6 L-4,-18 L-7,-7 C-20,-14 -40,-14 -50,-4 C-42,-2 -38,4 -38,10 C-30,4 -22,6 -18,14 C-14,8 -6,8 0,17 C6,8 14,8 18,14 C22,6 30,4 38,10 C38,4 42,-2 50,-4 C40,-14 20,-14 7,-7 L4,-18 Z');
+  const rand = (() => { let s = 1337; return () => (s = (s * 16807) % 2147483647) / 2147483647; })();
+  const bats = [];
+  const N = innerWidth < 700 ? 110 : 170;
+  let guard = 0;
+  while (bats.length < N && guard++ < 20000) {
+    const x = 330 + rand() * 660, y = 60 + rand() * 900;
+    let inside = true;
+    try { inside = cowlShape.isPointInFill(new DOMPoint(x, y)); } catch (e) {}
+    if (!inside) continue;
+    const ang = Math.atan2(y - 520, x - 653) + (rand() - .5) * 1.6;
+    bats.push({
+      x, y, ang,
+      dist: 260 + rand() * 900,
+      delay: rand() * .16,
+      size: .2 + rand() * .38,
+      phase: rand() * Math.PI * 2,
+      flap: 14 + rand() * 12,
+      wobble: (rand() - .5) * 140,
+      rise: 120 + rand() * 380,
+    });
+  }
+
+  function drawBats(p, time) {
+    bctx.clearRect(0, 0, W, H);
+    const start = .36, span = .42;
+    if (p < start) return;
+    const m = cowl.getScreenCTM();
+    if (!m) return;
+    const cr = batCanvas.getBoundingClientRect();
+    for (const b of bats) {
+      const t = range(p, start + b.delay, start + b.delay + span);
+      if (t <= 0 || t >= 1) continue;
+      const e = Math.pow(t, 1.7);
+      const sx = m.a * b.x + m.c * b.y + m.e - cr.left;
+      const sy = m.b * b.x + m.d * b.y + m.f - cr.top;
+      const px = sx + Math.cos(b.ang) * b.dist * e + Math.sin(t * 6 + b.phase) * b.wobble * e;
+      const py = sy + Math.sin(b.ang) * b.dist * e - b.rise * e;
+      const flap = .25 + .75 * Math.abs(Math.sin(time / 1000 * b.flap + b.phase));
+      const s = b.size * (0.6 + e * 0.9) * (W < 700 ? .7 : 1);
+      const alpha = Math.min(1, t * 6) * (1 - range(t, .65, 1));
+      bctx.save();
+      bctx.translate(px, py);
+      bctx.rotate(Math.sin(b.phase + t * 4) * .25);
+      bctx.scale(s, s * flap);
+      bctx.globalAlpha = alpha;
+      bctx.fillStyle = '#080b12';
+      bctx.fill(BAT);
+      bctx.lineWidth = 2.2 / s;
+      bctx.strokeStyle = 'rgba(150,175,225,.45)';
+      bctx.stroke(BAT);
+      bctx.restore();
+    }
+  }
+
+  // ---------- rain ----------
+  const drops = Array.from({ length: innerWidth < 700 ? 90 : 200 }, () => ({
+    x: Math.random(), y: Math.random(), l: 10 + Math.random() * 26, v: .6 + Math.random() * .9,
+  }));
+  function drawRain(dt) {
+    rctx.clearRect(0, 0, W, H);
+    rctx.strokeStyle = 'rgba(170,195,240,.35)';
+    rctx.lineWidth = 1;
+    rctx.beginPath();
+    for (const d of drops) {
+      d.y += d.v * dt * .0012;
+      d.x -= dt * .00008;
+      if (d.y > 1.05) { d.y = -.05; d.x = Math.random() * 1.1; }
+      if (d.x < -.05) d.x += 1.1;
+      const x = d.x * W, y = d.y * H;
+      rctx.moveTo(x, y); rctx.lineTo(x - d.l * .18, y + d.l);
+    }
+    rctx.stroke();
+  }
+
+  // ---------- lightning ----------
+  let nextStrike = performance.now() + 4000;
+  function lightning(now) {
+    if (reduceMotion || now < nextStrike) return;
+    nextStrike = now + 6000 + Math.random() * 9000;
+    flash.animate(
+      [{ opacity: 0 }, { opacity: .55 }, { opacity: .05 }, { opacity: .4 }, { opacity: 0 }],
+      { duration: 700, easing: 'ease-out' }
+    );
+  }
+
+  // ---------- scroll choreography ----------
+  let target = 0, current = 0;
+  function readScroll() {
+    const max = hero.offsetHeight - innerHeight;
+    target = clamp(-hero.getBoundingClientRect().top / max);
+  }
+  addEventListener('scroll', readScroll, { passive: true });
+  readScroll();
+
+  function render(p) {
+    // 1. white lenses fade, revealing the eyes
+    lenses.setAttribute('opacity', 1 - range(p, .0, .08));
+
+    // 2. cowl lifts off the head with a tilt
+    const lift = easeInOut(range(p, .06, .42));
+    const ty = -lift * 190, tx = lift * 30;
+    const rot = -lift * 11 + Math.sin(lift * Math.PI) * 4;
+    const sc = 1 + lift * .06;
+    cowl.setAttribute('transform',
+      `translate(${tx} ${ty}) translate(653 520) rotate(${rot}) scale(${sc}) translate(-653 -520)`);
+
+    // 3. cowl dissolves into a swarm
+    cowl.setAttribute('opacity', 1 - range(p, .38, .5));
+
+    // photo: noir → full colour
+    const c = easeInOut(range(p, .28, .72));
+    colorImg.style.opacity = c;
+    tint.style.opacity = 1 - c * .55;
+
+    ghost.style.opacity = 1 - range(p, .05, .4);
+    ghost.style.transform = `translate(-50%, calc(-50% - ${p * 30}vh)) scale(${1 + p * .25})`;
+    hint.style.opacity = 1 - range(p, 0, .05);
+
+    // name reveal
+    kicker.style.opacity = range(p, .66, .76);
+    const n = letters.length;
+    letters.forEach((el, i) => {
+      const t = easeOut(range(p, .68 + i * .012, .78 + i * .012));
+      el.style.opacity = t;
+      el.style.transform = `translateY(${(1 - t) * 40}px) rotateX(${(1 - t) * 70}deg)`;
+    });
+  }
+
+  let last = performance.now();
+  function frame(now) {
+    const dt = Math.min(64, now - last); last = now;
+    current += (target - current) * (reduceMotion ? 1 : .1);
+    if (Math.abs(target - current) < .0005) current = target;
+    render(current);
+    drawBats(current, now);
+    if (!reduceMotion) drawRain(dt); else rctx.clearRect(0, 0, W, H);
+    lightning(now);
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+
+  // ---------- content reveals ----------
+  const io = new IntersectionObserver((entries) => {
+    for (const e of entries) if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+  }, { threshold: .2 });
+  document.querySelectorAll('.fade-up').forEach((el) => io.observe(el));
+
+  document.querySelectorAll('.card').forEach((card) => {
+    card.addEventListener('pointermove', (e) => {
+      const r = card.getBoundingClientRect();
+      card.style.setProperty('--mx', `${e.clientX - r.left}px`);
+      card.style.setProperty('--my', `${e.clientY - r.top}px`);
+    });
+  });
+})();
+</script>
+</body>
+</html>
